@@ -1,7 +1,7 @@
 CREATE TABLE domains (
 	id SERIAL PRIMARY KEY,
-	domain VARCHAR(255) UNIQUE NOT NULL,
 	creation_date TIMESTAMPTZ NOT NULL,
+	domain VARCHAR(255) UNIQUE NOT NULL,
 	expiration_date TIMESTAMPTZ NOT NULL
 );
 
@@ -9,10 +9,10 @@ CREATE INDEX idx_domains_domain ON domains(domain);
 
 CREATE TABLE api_keys (
 	id SERIAL PRIMARY KEY,
+	api_key TEXT NOT NULL UNIQUE,
 	email TEXT NOT NULL UNIQUE,
-	validation_code TEXT,
 	email_verified BOOLEAN DEFAULT FALSE,
-	api_key TEXT NOT NULL UNIQUE
+	validation_code TEXT
 );
 
 CREATE INDEX idx_api_keys_api_key ON api_keys(api_key);

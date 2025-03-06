@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'sinatra/base'
-require 'pg'
 require 'dotenv/load'
+require 'pg'
+require 'sinatra/base'
 require_relative 'clients/authentication_client'
 require_relative 'clients/db_client'
 require_relative 'clients/whois_client'
@@ -28,7 +28,6 @@ class App < Sinatra::Base
     set :host_authorization, { permitted_hosts: %w[whois.gitgetgot.dev localhost 127.0.0.1] }
   end
 
-  before { puts "Request Host: #{request.host}" }
 
   get '/get-info' do
     handle_errors do
