@@ -1,0 +1,37 @@
+name: Run RSpec tests
+on: 
+  push:
+  pull_request:
+
+
+jobs:
+  run-rspec-tests:
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
+
+    runs-on: ubuntu-latest
+
+    env:
+      RACK_ENV: test
+      DB_NAME: test_db
+      DB_USER: test_user
+      DB_PASSWORD: test_password
+      DB_HOST: postgres
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install deps
+        run: bundle install
+      - name: Run specs
+        run: bundle exec rspec
