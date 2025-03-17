@@ -54,6 +54,21 @@ class WhoisClient
 
   class BadDomainError < StandardError; end
 
+  # Error raised when a domain is a subdomain.
+  class SubDomainError < StandardError
+    attr_reader :apex_domain, :api_key
+
+    def initialize(domain, api_key)
+      @apex_domain = domain.split('.')[-2..].join('.')
+      @api_key = api_key
+      super(<<~ERROR_MESSAGE)
+        The domain #{domain} is a subdomain, and therefore WHOIS operations \
+        cannot be performed on it. Therefore, operations will continue with \
+        the apex domain, #{@apex_domain}, instead.
+      ERROR_MESSAGE
+    end
+  end
+
   # Error raised when a domain is expired.
   class ExpiredDomainError < StandardError
     attr_reader :domain, :expiration_date

@@ -32,8 +32,16 @@ module Sinatra
       body({ error: 'Internal server error' }.to_json)
     end
 
+    def handle_subdomain_error(error)
+      status 302
+      headers 'Location' => "/get-info?api-key=#{error.api_key}&domain=#{error.apex_domain}"
+      body({ error: error.message }.to_json)
+    end
+
     def handle_whois_errors
       yield
+    rescue WhoisClient::SubDomainError => e
+      handle_subdomain_error(e)
     rescue WhoisClient::BadDomainError
       status 400
       body({ error: 'Bad domain' }.to_json)
