@@ -27,11 +27,11 @@ class AuthenticationClient
   def authenticated_and_within_limit?(api_key)
     api_key_result = @db_client.exec_params 'SELECT id FROM api_keys WHERE api_key = $1 AND email_verified = TRUE',
                                             [api_key]
-    raise InvalidApiKeyError if result.ntuples.zero?
+    raise InvalidApiKeyError if api_key_result.ntuples.zero?
 
     api_key_id = api_key_result.first['id']
-    @db_client.exec_params SELECT_QUERY, [api_key_id]
-    count.first['count'] <= 15
+    count = @db_client.exec_params SELECT_QUERY, [api_key_id]
+    count.first['count'].to_i <= 15
   end
 
   def issue_api_key!(email_address)
