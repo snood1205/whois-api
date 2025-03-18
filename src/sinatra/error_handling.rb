@@ -34,7 +34,7 @@ module Sinatra
 
     def handle_subdomain_error(error)
       status 302
-      headers 'Location' => "/get-info?api-key=#{error.api_key}&domain=#{error.apex_domain}"
+      headers 'Location' => "/get-info?api_key=#{error.api_key}&domain=#{error.apex_domain}"
       body({ error: error.message }.to_json)
     end
 

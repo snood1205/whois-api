@@ -25,7 +25,7 @@ module Sinatra
     private
 
     def validate_domain!(domain, api_key)
-      raise WhoisClient::SubdomainError.new(domain, api_key) if domain&.count('.')&.> 1
+      raise WhoisClient::SubDomainError.new(domain, api_key) if domain&.count('.')&.> 1
       raise WhoisClient::BadDomainError if domain.nil? || domain.empty? || !domain.match?(APEX_DOMAIN_REGEX)
     end
 

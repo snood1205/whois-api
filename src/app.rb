@@ -28,8 +28,6 @@ class App < Sinatra::Base
     set :host_authorization, { permitted_hosts: %w[whois.gitgetgot.dev localhost 127.0.0.1] }
   end
 
-  before { puts "Request Host: #{request.host}" }
-
   get '/get-info' do
     handle_errors do
       api_key = params[:api_key]
