@@ -26,7 +26,11 @@ module Sinatra
     def handle_standard_error
       yield
     rescue StandardError => e
-      raise e if ENV['RACK_ENV'] == 'development'
+      if ENV['RACK_ENV'] == 'development'
+        raise e 
+      else
+        LOGGER.error e
+      end
 
       status 500
       body({ error: 'Internal server error' }.to_json)
